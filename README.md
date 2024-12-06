@@ -103,3 +103,51 @@ In order to complete this assignment, you must do the following:
 ### Grading
 
 This assignment will be graded via peer assessment.
+
+makeCacheMatrix <- function(x = matrix()) {
+  inv <- NULL 
+  
+  set <- function(y) {
+    x <<- y   
+    inv <<- NULL 
+  }
+  
+  get <- function() x 
+  
+  setInverse <- function(inverse) inv <<- inverse 
+  
+  getInverse <- function() inv 
+  
+  list(set = set, get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
+}
+
+cacheSolve <- function(x, ...) {
+  inv <- x$getInverse()
+  
+  if (!is.null(inv)) { 
+    message("Retrieving the inverse from the cache")
+    return(inv)
+  }
+  
+  mat <- x$get() 
+  inv <- solve(mat, ...) 
+  x$setInverse(inv) 
+  inv
+}
+
+
+mat <- matrix(c(1, 2, 3, 4), nrow = 2)
+
+
+cachedMatrix <- makeCacheMatrix(mat)
+
+
+inv1 <- cacheSolve(cachedMatrix)
+print(inv1)
+
+
+inv2 <- cacheSolve(cachedMatrix)
+print(inv2)
+
